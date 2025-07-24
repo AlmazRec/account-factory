@@ -1,9 +1,49 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
     --color-header: rgba(255, 255, 255, 0.2);
 }
 
-@theme dark {
+@variant dark {
     --color-header: rgba(12, 24, 60, 0.25);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Стиль для предотвращения прокрутки тела при открытом мобильном меню */
+body.no-scroll {
+    overflow: hidden;
+}
+
+/*
+   Для мобильного меню:
+   Эти стили не могут быть полностью перенесены в Tailwind классы на этом элементе,
+   поскольку они описывают начальное/конечное состояние для JS-переключения.
+   Если вы используете CSS-фреймворки типа Alpine.js или React/Vue
+   с динамическими классами, то это можно будет сделать полностью декларативно.
+   В чистом JS, как сейчас, это самый читаемый и эффективный способ.
+*/
+#mobile-menu:not(.is-open) {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+#mobile-menu.is-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
 }
