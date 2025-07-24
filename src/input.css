@@ -25,7 +25,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: "Segoe UI", sans-serif;
     background-color: #f8f9fa;
 }
 input[type=number]::-webkit-inner-spin-button,
@@ -62,42 +62,3 @@ body.no-scroll {
     pointer-events: auto;
 }
 
-body::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 1200px;
-    height: 1500px;
-    background: linear-gradient(90deg,
-    rgba(255, 140, 80, 0.7) 1.37%,
-    rgba(204, 0, 180, 0.7) 34.7%,
-    rgba(80, 160, 255, 0.7) 68.03%,
-    rgba(0, 100, 220, 0.7) 101.37%);
-
-    background-size: 300% 300%;
-    background-position: 0 0;
-    backdrop-filter: blur(457.5px);
-    filter: blur(90px);
-    animation: gradient 15s infinite linear;
-    opacity: 0.7;
-    z-index: -1;
-    pointer-events: none;
-    will-change: transform, filter, opacity;
-    border-radius: 20px;
-}
-
-@keyframes gradient {
-    0% {
-        background-position: 0% 0%;
-    }
-
-    50% {
-        background-position: 100% 100%;
-    }
-
-    100% {
-        background-position: 0% 0%;
-    }
-}
