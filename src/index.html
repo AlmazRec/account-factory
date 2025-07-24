@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="ru" theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="output.css">
+    <title>Account Factory</title>
+    <style>
+        /* Стиль для предотвращения прокрутки тела при открытом мобильном меню */
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        /*
+           Для мобильного меню:
+           Эти стили не могут быть полностью перенесены в Tailwind классы на этом элементе,
+           поскольку они описывают начальное/конечное состояние для JS-переключения.
+           Однако, если вы используете CSS-фреймворки типа Alpine.js или React/Vue
+           с динамическими классами, то это можно будет сделать полностью декларативно.
+           В чистом JS, как сейчас, это самый читаемый и эффективный способ.
+        */
+        #mobile-menu:not(.is-open) {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #mobile-menu.is-open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class=" text-gray-800 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-200">
+<header class="w-full py-2 fixed top-0 left-0 right-0 z-50 bg-header">
+    <div class="mx-auto max-w-7xl px-2 sm:px-5 lg:px-8">
+        <div
+                id="main-header-content"
+                class="flex h-12 items-center justify-between rounded-full bg-white/60 backdrop-blur-md px-4 shadow-lg mt-1 gap-x-3 border border-gray-200 transition-colors duration-300
+                       dark:bg-slate-900/60 dark:border-white/10"
+        >
+            <div class="flex items-center gap-x-3 min-w-0 flex-shrink-0">
+                <img
+                        src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1753272939499-i2pz2h4nhv.png"
+                        alt="Account Factory logo"
+                        class="h-12 w-12 rounded-lg object-contain"
+                        draggable="false"
+                />
+                <span class="text-gray-900 text-lg font-semibold whitespace-nowrap select-none tracking-wide drop-shadow-sm dark:text-white">
+                    Account Factory
+                </span>
+            </div>
+
+            <nav class="hidden lg:flex items-center gap-x-0.5 flex-shrink-0">
+                <a
+                        href="#"
+                        class="px-3 py-1 text-sm font-medium text-gray-700 rounded-full transition select-none whitespace-nowrap hover:bg-pink-100 hover:text-pink-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400/40 active:bg-gray-200 min-h-7
+                               dark:text-white/80 dark:hover:bg-pink-500/10 dark:hover:text-white dark:active:bg-slate-900/50"
+                >
+                    Каталог
+                </a>
+                <a
+                        href="#"
+                        class="px-3 py-1 text-sm font-medium text-gray-700 rounded-full transition select-none whitespace-nowrap hover:bg-pink-100 hover:text-pink-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400/40 active:bg-gray-200 min-h-7
+                               dark:text-white/80 dark:hover:bg-pink-500/10 dark:hover:text-white dark:active:bg-slate-900/50"
+                >
+                    Поиск товара
+                </a>
+                <a
+                        href="#"
+                        class="px-3 py-1 text-sm font-medium text-gray-700 rounded-full transition select-none whitespace-nowrap hover:bg-pink-100 hover:text-pink-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400/40 active:bg-gray-200 min-h-7
+                               dark:text-white/80 dark:hover:bg-pink-500/10 dark:hover:text-white dark:active:bg-slate-900/50"
+                >
+                    FAQ
+                </a>
+                <a
+                        href="#"
+                        class="px-3 py-1 text-sm font-medium text-gray-700 rounded-full transition select-none whitespace-nowrap hover:bg-pink-100 hover:text-pink-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400/40 active:bg-gray-200 min-h-7
+                               dark:text-white/80 dark:hover:bg-pink-500/10 dark:hover:text-white dark:active:bg-slate-900/50"
+                >
+                    Поставщикам
+                </a>
+                <a
+                        href="#"
+                        class="px-3 py-1 text-sm font-medium text-gray-700 rounded-full transition select-none whitespace-nowrap hover:bg-pink-100 hover:text-pink-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400/40 active:bg-gray-200 min-h-7
+                               dark:text-white/80 dark:hover:bg-pink-500/10 dark:hover:text-white dark:active:bg-slate-900/50"
+                >
+                    Контакты
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-x-2 flex-shrink-0">
+                <button
+                        id="theme-toggle"
+                        class="relative flex items-center gap-2 rounded-full px-2 py-0.5 transition-colors shadow-none outline-none focus-visible:ring-2 focus-visible:ring-pink-200/30 min-w-14
+                               bg-gray-100 border border-gray-300 hover:border-pink-300
+                               dark:bg-slate-900/60 dark:border-white/10 dark:hover:border-pink-400/40
+                        "
+                        aria-label="Переключить тему"
+                        type="button"
+                >
+                    <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="h-4 w-4 transition-colors duration-200 text-yellow-500 dark:text-gray-400"
+                    >
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2"></path>
+                        <path d="M12 20v2"></path>
+                        <path d="m4.93 4.93 1.41 1.41"></path>
+                        <path d="m17.66 17.66 1.41 1.41"></path>
+                        <path d="M2 12h2"></path>
+                        <path d="M20 12h2"></path>
+                        <path d="m6.34 17.66-1.41 1.41"></path>
+                        <path d="m19.07 4.93-1.41 1.41"></path>
+                    </svg>
+                    <span class="relative inline-flex w-8 h-5 items-center">
+                        <span class="absolute inset-0 rounded-full transition-colors border
+                                bg-gray-300 border-gray-400
+                                dark:bg-gray-950 dark:border-white/10
+                        "></span>
+                        <span
+                                id="theme-toggle-ball"
+                                class="absolute w-4 h-4 rounded-full shadow transition-all duration-200 left-0.5 top-0.5
+                                dark:translate-x-3 dark:bg-pink-400/80 dark:shadow-pink-400/30
+                                bg-white shadow-gray-300
+                        "
+                        ></span>
+                    </span>
+                    <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="h-4 w-4 transition-colors duration-200 text-gray-400 dark:text-pink-300/90"
+                    >
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                    </svg>
+                </button>
+
+                <button class="flex items-center justify-center h-9 w-9 rounded-full transition-colors
+                               bg-gray-100 hover:bg-gray-200
+                               dark:bg-slate-800/60 dark:hover:bg-slate-700/80
+                ">
+                    <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="h-5 w-5 text-gray-700 dark:text-white/80"
+                    >
+                        <path d="M22 17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.5C2 7 4 5 6.5 5H18c2.2 0 4 1.8 4 4v8Z"></path>
+                        <polyline points="15 9 18 9 18 11"></polyline>
+                        <path d="M6.5 5C9 5 18 5 18 5V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v1h.5Z"></path>
+                        <path d="M12 19V9"></path>
+                        <path d="m15 12-3 3-3-3"></path>
+                    </svg>
+                </button>
+
+                <button class="flex items-center space-x-1 rounded-full h-9 px-3 text-sm font-semibold transition
+                               bg-transparent text-gray-700 hover:bg-gray-100 border border-transparent hover:border-gray-300
+                               dark:text-white dark:hover:bg-slate-800/80 dark:hover:border-white/20 dark:gap-x-1
+                ">
+                    <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="h-4 w-4 text-gray-700 dark:text-white"
+                    >
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                        <polyline points="10 17 15 12 10 7"></polyline>
+                        <line x1="15" y1="12" x2="3" y2="12"></line>
+                    </svg>
+                    <span>Войти</span>
+                </button>
+            </div>
+
+            <button
+                    id="mobile-menu-button"
+                    class="lg:hidden flex items-center justify-center h-9 w-9 rounded-full transition-colors ml-auto
+                           bg-gray-100 hover:bg-gray-200
+                           dark:bg-slate-800/60 dark:hover:bg-slate-700/80
+                    "
+            >
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="h-5 w-5 text-gray-700 dark:text-white/80"
+                >
+                    <line x1="4" y1="12" x2="20" y2="12"></line>
+                    <line x1="4" y1="6" x2="20" y2="6"></line>
+                    <line x1="4" y1="18" x2="20" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div
+            id="mobile-menu"
+            class="fixed inset-x-0
+                   top-[60px]          /* Отступ сверху (высота хедера + небольшой зазор) */
+                   max-h-[calc(100vh-60px)] /* Максимальная высота: 100% viewport минус высота хедера */
+                   overflow-y-auto       /* Включаем прокрутку, если содержимое превышает max-h */
+                   bg-white/90 backdrop-blur-lg z-40 transition-transform duration-300 ease-in-out lg:hidden
+                   dark:bg-slate-900/90 dark:border-t dark:border-slate-700
+            "
+    >
+        <nav class="flex flex-col p-4 space-y-2 border-t border-gray-200 dark:border-slate-700">
+            <a
+                    href="#"
+                    class="block px-3 py-2 text-lg font-medium text-gray-800 rounded-lg hover:bg-pink-100 hover:text-pink-600 dark:text-white dark:hover:bg-slate-800 dark:hover:text-pink-400"
+            >
+                Каталог
+            </a>
+            <a
+                    href="#"
+                    class="block px-3 py-2 text-lg font-medium text-gray-800 rounded-lg hover:bg-pink-100 hover:text-pink-600 dark:text-white dark:hover:bg-slate-800 dark:hover:text-pink-400"
+            >
+                Поиск товара
+            </a>
+            <a
+                    href="#"
+                    class="block px-3 py-2 text-lg font-medium text-gray-800 rounded-lg hover:bg-pink-100 hover:text-pink-600 dark:text-white dark:hover:bg-slate-800 dark:hover:text-pink-400"
+            >
+                FAQ
+            </a>
+            <a
+                    href="#"
+                    class="block px-3 py-2 text-lg font-medium text-gray-800 rounded-lg hover:bg-pink-100 hover:text-pink-600 dark:text-white dark:hover:bg-slate-800 dark:hover:text-pink-400"
+            >
+                Поставщикам
+            </a>
+            <a
+                    href="#"
+                    class="block px-3 py-2 text-lg font-medium text-gray-800 rounded-lg hover:bg-pink-100 hover:text-pink-600 dark:text-white dark:hover:bg-slate-800 dark:hover:text-pink-400"
+            >
+                Контакты
+            </a>
+        </nav>
+        <div class="p-4 border-t border-gray-200 flex flex-col gap-2 dark:border-slate-700">
+            <button class="w-full flex items-center justify-center space-x-2 rounded-lg py-2 text-sm font-semibold transition
+                            bg-gray-100 hover:bg-gray-200 text-gray-700
+                            dark:bg-slate-800/60 dark:hover:bg-slate-700/80 dark:text-white
+            ">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="h-4 w-4 text-gray-700 dark:text-white"
+                >
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10 17 15 12 10 7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+                <span>Войти</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main class="pt-20 p-4">
+    <h1 class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Добро пожаловать!</h1>
+    <p class="mb-2 text-gray-700 dark:text-gray-300">
+        Это пример адаптивного хедера с переключением темы и мобильным меню.
+        Измените размер окна браузера, чтобы увидеть адаптивность.
+        Теперь меню не должно открываться на весь экран.
+    </p>
+    <div class="h-[1000px] bg-gray-100 dark:bg-gray-800 rounded-lg p-4 flex items-center justify-center text-gray-500 dark:text-gray-400">
+        Прокрутите вниз, чтобы увидеть, что хедер фиксирован.
+        Здесь много контента для демонстрации прокрутки мобильного меню.
+        <br><br>
+        Если мобильное меню заполнено большим количеством ссылок, оно будет прокручиваться внутри себя.
+        <br><br>
+        1. Пункт меню<br>2. Пункт меню<br>3. Пункт меню<br>4. Пункт меню<br>5. Пункт меню<br>6. Пункт меню<br>
+        7. Пункт меню<br>8. Пункт меню<br>9. Пункт меню<br>10. Пункт меню<br>11. Пункт меню<br>12. Пункт меню<br>
+        13. Пункт меню<br>14. Пункт меню<br>15. Пункт меню<br>16. Пункт меню<br>17. Пункт меню<br>18. Пункт меню<br>
+        19. Пункт меню<br>20. Пункт меню<br>21. Пункт меню<br>22. Пункт меню<br>23. Пункт меню<br>24. Пункт меню<br>
+        25. Пункт меню<br>26. Пункт меню<br>27. Пункт меню<br>28. Пункт меню<br>29. Пункт меню<br>30. Пункт меню<br>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeToggleBall = document.getElementById('theme-toggle-ball');
+        const htmlElement = document.documentElement;
+
+        // Вычисляем высоту хедера динамически
+        const headerHeight = document.getElementById('main-header-content').offsetHeight + 4; // Высота h-12 (48px) + mt-1 (4px) = 52px, но с py-2 и margin/padding вокруг, фактическая высота будет около 60px.
+        // Добавим немного запаса, чтобы точно не перекрывалось
+        const topOffset = headerHeight + 8; // Примерно 60px + 8px = 68px.
+        // Или можно взять фиксированное значение, если хедер всегда одной высоты
+        // const topOffset = 60; // Это соответствует top-[60px] в Tailwind
+
+        // Применяем вычисленный topOffset к мобильному меню
+        mobileMenu.style.top = `${topOffset}px`;
+        mobileMenu.style.maxHeight = `calc(100vh - ${topOffset}px)`;
+
+
+        function setTheme(isDark) {
+            if (isDark) {
+                htmlElement.classList.add('dark');
+                // Двигаем ползунок вправо для темной темы
+                themeToggleBall.classList.remove('translate-x-0', 'bg-white', 'shadow-gray-300');
+                themeToggleBall.classList.add('translate-x-3', 'bg-pink-400/80', 'shadow-pink-400/30');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                htmlElement.classList.remove('dark');
+                // Двигаем ползунок влево для светлой темы
+                themeToggleBall.classList.remove('translate-x-3', 'bg-pink-400/80', 'shadow-pink-400/30');
+                themeToggleBall.classList.add('translate-x-0', 'bg-white', 'shadow-gray-300');
+                localStorage.setItem('theme', 'light');
+            }
+            document.body.classList.toggle('dark', isDark);
+        }
+
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let initialThemeIsDark = savedTheme === 'dark' || (savedTheme === null && prefersDark);
+
+            // Если сохранена светлая тема или нет сохраненной темы, а системная не темная, то светлая
+            if (savedTheme === 'light' || (savedTheme === null && !prefersDark)) {
+                setTheme(false); // Устанавливаем светлую тему
+            } else {
+                setTheme(true); // Устанавливаем темную тему
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isCurrentlyDark = htmlElement.classList.contains('dark');
+            setTheme(!isCurrentlyDark);
+        });
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('is-open');
+            document.body.classList.toggle('no-scroll', isOpen);
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 1024) {
+                    mobileMenu.classList.remove('is-open');
+                    document.body.classList.remove('no-scroll');
+                }
+            });
+        });
+
+        // Инициализация темы и позиционирования меню при загрузке
+        initializeTheme();
+
+        // Дополнительно: обработчик изменения размера окна, чтобы пересчитать положение меню
+        window.addEventListener('resize', () => {
+            if (!mobileMenu.classList.contains('is-open')) { // Пересчитываем только если меню не открыто
+                const headerHeightOnResize = document.getElementById('main-header-content').offsetHeight + 4;
+                const topOffsetOnResize = headerHeightOnResize + 8;
+                mobileMenu.style.top = `${topOffsetOnResize}px`;
+                mobileMenu.style.maxHeight = `calc(100vh - ${topOffsetOnResize}px)`;
+            }
+        });
+    });
+</script>
+</body>
+</html>
