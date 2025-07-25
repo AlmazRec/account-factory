@@ -38,9 +38,11 @@ input[type=number] {
 }
 
 /* Стиль для предотвращения прокрутки тела при открытом мобильном меню */
-body.no-scroll {
+.no-scroll {
     overflow: hidden;
+    height: 100vh;
 }
+
 
 /*
    Для мобильного меню:
@@ -50,7 +52,7 @@ body.no-scroll {
    с динамическими классами, то это можно будет сделать полностью декларативно.
    В чистом JS, как сейчас, это самый читаемый и эффективный способ.
 */
-#mobile-menu:not(.is-open) {
+#mobile-menu {
     transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
@@ -61,4 +63,5 @@ body.no-scroll {
     opacity: 1;
     pointer-events: auto;
 }
+
 
