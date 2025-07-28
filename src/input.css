@@ -64,4 +64,12 @@ input[type=number] {
     pointer-events: auto;
 }
 
+/* Добавить в <style> */
+.clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Показывать ровно 3 строки */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 
